@@ -1,0 +1,61 @@
+function textDollar(n) {
+  const numbersDict = {
+    1: "One",
+    2: "Two",
+    3: "Three",
+    4: "Four",
+    5: "Five",
+    6: "Six",
+    7: "Seven",
+    8: "Eight",
+    9: "Nine",
+    10: "Ten",
+    11: "Eleven",
+    12: "Twelve",
+    13: "Thirteen",
+    14: "Fourteen",
+    15: "Fifteen",
+    16: "Sixteen",
+    17: "Seventeen",
+    18: "Eighteen",
+    19: "Nineteen",
+    20: "Twenty",
+    30: "Thirty",
+    40: "Forty",
+    50: "Fifty",
+    60: "Sixty",
+    70: "Seventy",
+    80: "Eighty",
+    90: "Ninety",
+    100: "Hundred",
+    1000: "Thousand",
+    1000000: "Million"
+  };
+
+  //millions thousands hundreds tens
+
+  if (n <= 20) return numbersDict[n];
+
+  let digits = String(n).split("");
+  // let size = digits.length;
+
+
+  let numberStringArray = [];
+
+
+  // block below processes chunks of 3 digits
+  if (digits.length == 3) {
+    numberStringArray.push(numbersDict[digits[0]]);
+    numberStringArray.push(numbersDict[100]);
+    numberStringArray.push(numbersDict[digits[1] + "0"]);
+    let ones = digits[2] === "0" ? "" : numbersDict[digits[2]];
+    numberStringArray.push(ones);
+  }
+
+  // TODO: use if block above to iteratively process chunks of three digits; solution could also invoke itself recursively
+
+  return numberStringArray.join("");
+}
+
+
+module.exports = textDollar;

@@ -45,35 +45,50 @@ function textDollar(n) {
 
   let currentChunk = 0;
 
-  console.log("digits", digits);
+  // console.log("digits", digits);
 
   while (digits.length && currentChunk <= 2) {
     if (currentChunk == 1) numberStringArray.unshift("Thousand");
     if (currentChunk == 2) numberStringArray.unshift("Million");
     let chunk = digits.splice(0, 3).reverse();
-    console.log("chunk: ", chunk);
-    if (chunk.length == 3 && chunk[0] !== "0") {
-      let ones = chunk[2] === "0" ? "" : numbersDict[chunk[2]];
-      numberStringArray.unshift(ones);
-      numberStringArray.unshift(numbersDict[chunk[1] + "0"]);
-      numberStringArray.unshift(numbersDict[100]);
-      numberStringArray.unshift(numbersDict[chunk[0]]);
-    } else if (chunk.length == 2 && chunk[0] !=="0" && parseInt(chunk[0] + chunk[1]) > 20) {
-      numberStringArray.unshift(numbersDict[chunk[1]]);
-      numberStringArray.unshift(numbersDict[chunk[0] + "0"]);
-    } else if (chunk.length == 2 && chunk[0] == "0") {
-      numberStringArray.unshift(numbersDict[chunk[1]]);
-    } else if (chunk.length == 1 && chunk[0] !== "0") {
-      numberStringArray.unshift(numbersDict[chunk[0]]);
+    // console.log("chunk: ", chunk);
+
+    switch (chunk.length) {
+      case 1:
+        numberStringArray.unshift(numbersDict[chunk[0]]);
+      case 2:
+        if (parseInt(chunk[0] + chunk[1]) <= 20) {
+          numberStringArray.unshift(numbersDict[parseInt(chunk[0] + chunk[1])]);
+        } else {
+          numberStringArray.unshift(numbersDict[chunk[1]]);
+          numberStringArray.unshift(numbersDict[chunk[0] + "0"]);
+        }
+        break;
+      case 3:
+        if (parseInt(chunk[1] + chunk[2]) <= 20) {
+          numberStringArray.unshift(numbersDict[parseInt(chunk[1] + chunk[2])]);
+          numberStringArray.unshift(numbersDict[100]);
+          numberStringArray.unshift(numbersDict[chunk[0]]);
+        } else {
+          numberStringArray.unshift(numbersDict[chunk[2]]);
+          numberStringArray.unshift(numbersDict[chunk[1] + "0"]);
+          numberStringArray.unshift(numbersDict[100]);
+          numberStringArray.unshift(numbersDict[chunk[0]]);
+        }
+        break;
+      default:
     }
 
     currentChunk++;
   }
-
-  // TODO: refactor and control for some edge cases not captured in code above
 
   return numberStringArray.join("");
 }
 
 
 module.exports = textDollar;
+
+
+console.log( textDollar(419501) );
+console.log( textDollar(419234578) );
+
